@@ -1,0 +1,134 @@
+[
+  {
+    "id": "PROMO_10PCT",
+    "type": "PERCENT_OFF",
+    "description": "10% off your entire order",
+    "value": 10,
+    "appliesTo": null,
+    "minimumOrderValue": null,
+    "stackable": true,
+    "startDate": "2026-01-01",
+    "endDate": "2026-12-31"
+  },
+  {
+    "id": "PROMO_5OFF50",
+    "type": "FLAT_DISCOUNT",
+    "description": "$5 off orders over $50",
+    "value": 5,
+    "appliesTo": null,
+    "minimumOrderValue": 50,
+    "stackable": true,
+    "startDate": "2026-01-01",
+    "endDate": "2026-12-31"
+  },
+  {
+    "id": "PROMO_BOGO_SOCKS",
+    "type": "BUY_ONE_GET_ONE",
+    "description": "Buy one get one free on socks",
+    "value": null,
+    "appliesTo": "SKU-SOCKS-001",
+    "minimumOrderValue": null,
+    "stackable": false,
+    "startDate": "2026-01-01",
+    "endDate": "2026-12-31"
+  },
+  {
+    "id": "PROMO_ELEC_15",
+    "type": "CATEGORY_DISCOUNT",
+    "description": "15% off all electronics",
+    "value": 15,
+    "appliesTo": "ELECTRONICS",
+    "minimumOrderValue": null,
+    "stackable": true,
+    "startDate": "2026-01-01",
+    "endDate": "2026-12-31"
+  },
+  {
+    "id": "PROMO_SUMMER_20",
+    "type": "PERCENT_OFF",
+    "description": "Summer sale: 20% off everything",
+    "value": 20,
+    "appliesTo": null,
+    "minimumOrderValue": 100,
+    "stackable": false,
+    "startDate": "2026-06-01",
+    "endDate": "2026-08-31"
+  },
+  {
+    "id": "PROMO_CLOTHING_25",
+    "type": "CATEGORY_DISCOUNT",
+    "description": "25% off all clothing",
+    "value": 25,
+    "appliesTo": "CLOTHING",
+    "minimumOrderValue": null,
+    "stackable": true,
+    "startDate": "2026-06-15",
+    "endDate": "2026-07-15"
+  },
+  {
+    "id": "PROMO_15OFF100",
+    "type": "FLAT_DISCOUNT",
+    "description": "$15 off orders over $100",
+    "value": 15,
+    "appliesTo": null,
+    "minimumOrderValue": 100,
+    "stackable": true,
+    "startDate": "2026-01-01",
+    "endDate": "2026-12-31"
+  },
+  {
+    "id": "PROMO_BOGO_HEADPHONES",
+    "type": "BUY_ONE_GET_ONE",
+    "description": "Buy one get one free on headphones",
+    "value": null,
+    "appliesTo": "SKU-HEADPHONES-001",
+    "minimumOrderValue": null,
+    "stackable": false,
+    "startDate": "2026-06-01",
+    "endDate": "2026-06-30"
+  },
+  {
+    "id": "PROMO_FLASH_30",
+    "type": "PERCENT_OFF",
+    "description": "Flash sale: 30% off everything",
+    "value": 30,
+    "appliesTo": null,
+    "minimumOrderValue": 150,
+    "stackable": false,
+    "startDate": "2026-07-01",
+    "endDate": "2026-07-07"
+  },
+  {
+    "id": "PROMO_SHOES_20",
+    "type": "CATEGORY_DISCOUNT",
+    "description": "20% off all shoes",
+    "value": 20,
+    "appliesTo": "SHOES",
+    "minimumOrderValue": null,
+    "stackable": true,
+    "startDate": "2026-01-01",
+    "endDate": "2026-12-31"
+  },
+  {
+    "id": "PROMO_LOYALTY_5",
+    "type": "PERCENT_OFF",
+    "description": "Loyalty bonus: 5% off",
+    "value": 5,
+    "appliesTo": null,
+    "minimumOrderValue": null,
+    "stackable": true,
+    "startDate": "2026-01-01",
+    "endDate": "2026-12-31"
+  },
+  {
+    "id": "PROMO_BOOKS_FREE_SHIP",
+    "type": "FLAT_DISCOUNT",
+    "description": "$3 off books (free shipping equivalent)",
+    "value": 3,
+    "appliesTo": "BOOKS",
+    "minimumOrderValue": null,
+    "stackable": true,
+    "startDate": "2026-01-01",
+    "endDate": "2026-12-31"
+  }
+]

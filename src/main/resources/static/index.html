@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Engine</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+
+        .result h3 {
+            margin-top: 0;
+        }
+
+        .error {
+            background: #fee;
+            color: #c00;
+        }
+
+        .promotions {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Pricing Engine</h1>
+<div class="section">
+    <h2>Shopping Cart</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Qty</th>
+        </tr>
+        </thead>
+        <tbody id="products"></tbody>
+    </table>
+    <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
+</div>
+<div class="section">
+    <h2>Calculate</h2>
+    <button onclick="calculateTotal()">Question 1: Calculate Total</button>
+    <button onclick="calculateBest()">Question 2: Calculate Best Total</button>
+    <div id="result" class="result" style="display:none;"></div>
+</div>
+<div class="section">
+    <h2>Active Promotions (Today)</h2>
+    <div id="promotions">Loading...</div>
+</div>
+<script>
+    const products = [
+        {sku: "SKU-LAPTOP-001", name: "Laptop", category: "ELECTRONICS", price: 999.99},
+        {sku: "SKU-HEADPHONES-001", name: "Headphones", category: "ELECTRONICS", price: 149.99},
+        {sku: "SKU-PHONE-001", name: "Phone", category: "ELECTRONICS", price: 699.99},
+        {sku: "SKU-SHIRT-001", name: "T-Shirt", category: "CLOTHING", price: 29.99},
+        {sku: "SKU-JEANS-001", name: "Jeans", category: "CLOTHING", price: 59.99},
+        {sku: "SKU-SOCKS-001", name: "Socks", category: "CLOTHING", price: 12.99},
+        {sku: "SKU-SNEAKERS-001", name: "Sneakers", category: "SHOES", price: 89.99},
+        {sku: "SKU-BOOK-001", name: "Programming Book", category: "BOOKS", price: 49.99}
+    ];
+    const quantities = {};
+
+    function renderProducts() {
+        const tbody = document.getElementById('products');
+        tbody.innerHTML = products.map(p => `
+                <tr>
+                    <td>${p.name}</td>
+                    <td>${p.category}</td>
+                    <td>$${p.price.toFixed(2)}</td>
+                    <td><input type="number" min="0" value="0" onchange="updateQty('${p.sku}', this.value)"></td>
+                </tr>
+            `).join('');
+    }
+
+    function updateQty(sku, qty) {
+        quantities[sku] = parseInt(qty) || 0;
+        updateSubtotal();
+    }
+
+    function updateSubtotal() {
+        let total = 0;
+        for (const p of products) total += p.price * (quantities[p.sku] || 0);
+        document.getElementById('subtotal').textContent = total.toFixed(2);
+    }
+
+    const getCart = () => products.filter(p => quantities[p.sku] > 0).map(p => ({...p, quantity: quantities[p.sku]}));
+
+    async function calculateTotal() {
+        const result = document.getElementById('result');
+        const cart = getCart();
+        if (cart.length === 0) {
+            result.innerHTML = '<p>Add items to cart first.</p>';
+            result.className = 'result error';
+            result.style.display = 'block';
+            return;
+        }
+        try {
+            const res = await fetch('/api/pricing/calculate', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(cart)
+            });
+            const data = await res.json();
+            if (data.total !== undefined) {
+                result.innerHTML = `<h3>Total: $${data.total.toFixed(2)}</h3>`;
+                result.className = 'result';
+            } else {
+                result.innerHTML = `<p>Not implemented yet</p>`;
+                result.className = 'result error';
+            }
+        } catch (e) {
+            result.innerHTML = '<p>Error: ' + e.message + '</p>';
+            result.className = 'result error';
+        }
+        result.style.display = 'block';
+    }
+
+    async function calculateBest() {
+        const result = document.getElementById('result');
+        const cart = getCart();
+        if (cart.length === 0) {
+            result.innerHTML = '<p>Add items to cart first.</p>';
+            result.className = 'result error';
+            result.style.display = 'block';
+            return;
+        }
+        try {
+            const res = await fetch('/api/pricing/calculate-best', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(cart)
+            });
+            const data = await res.json();
+            const total = data.bestTotal ?? data.total;
+            if (total !== undefined) {
+                let html = `<h3>Best Total: $${total.toFixed(2)}</h3>`;
+                if (data.savings) html += `<p>You saved: $${data.savings.toFixed(2)}</p>`;
+                if (data.appliedPromotions && data.appliedPromotions.length > 0) html += `<p>Applied: ${data.appliedPromotions.map(p => p.description || p.id).join(', ')}</p>`;
+                result.innerHTML = html;
+                result.className = 'result';
+            } else {
+                result.innerHTML = `<p>Not implemented yet</p>`;
+                result.className = 'result error';
+            }
+        } catch (e) {
+            result.innerHTML = '<p>Error: ' + e.message + '</p>';
+            result.className = 'result error';
+        }
+        result.style.display = 'block';
+    }
+
+    async function loadPromotions() {
+        try {
+            const res = await fetch('/api/promotions');
+            const data = await res.json();
+            document.getElementById('promotions').innerHTML = data.map(p =>
+                `<div><strong>${p.id}</strong>: ${p.description} ${p.stackable ? '(stackable)' : '(non-stackable)'}</div>`
+            ).join('');
+        } catch (e) {
+            document.getElementById('promotions').innerHTML = 'Error loading promotions';
+        }
+    }
+
+    renderProducts();
+    loadPromotions();
+</script>
+</body>
+</html>
