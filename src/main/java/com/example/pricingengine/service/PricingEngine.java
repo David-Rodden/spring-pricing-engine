@@ -26,19 +26,4 @@ public class PricingEngine {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented");
     }
-
-    /**
-     * Question 2: Find the optimal combination of promotions that minimizes the cart total.
-     * <p>
-     * Evaluate all valid combinations of stackable promotions, compare against each
-     * non-stackable promotion applied individually, and return whichever yields the lowest total.
-     * <p>
-     * Return a PricingResult (you'll need to create this) containing the final total,
-     * the Collection of promotions that were applied, and the savings amount. This lets the
-     * caller show the customer what they saved and why.
-     */
-    public BigDecimal calculateBestTotal(final Collection<CartItem> cart) {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented");
-    }
 }
