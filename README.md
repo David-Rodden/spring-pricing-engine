@@ -14,7 +14,11 @@ Then check `GET http://localhost:8080/api/promotions` to see active promotions. 
 
 ## Your Task
 
-Implement `calculateTotal` in `PricingEngine.java`: given a cart, return the final total after applying promotions.
+Implement the two methods in `PricingEngine.java`.
+
+## Question 1: `calculateTotal`
+
+Given a cart, return the final total after applying promotions.
 
 ### Details
 
@@ -29,4 +33,20 @@ Every discount is computed off the subtotal and the original line totals, so app
 
 Use whatever design patterns feel natural here to keep the logic clean and extensible.
 
-Once you implement the method, go to http://localhost:8080 to test with the UI. You can add products to your cart, calculate totals, and view active promotions. You can also run `mvn test`.
+## Question 2: `calculateBestTotal`
+
+Same cart, but now find the combination of promotions that gives the customer the lowest possible total, and report back what was applied so we can show them why.
+
+### Details
+
+One rule changes from Question 1: **`minimumOrderValue` is now checked against the running total, not the subtotal.** So applying one discount can push the cart under another promotion's threshold and cost you a bigger saving - which means "apply everything that's stackable" is no longer guaranteed to be the cheapest, and the order you apply things in matters.
+
+Return a `PricingResult` (you'll need to create it) with:
+
+- the final total
+- the promotions that were applied
+- the total savings versus the subtotal
+
+## Testing
+
+Go to http://localhost:8080 to test with the UI. You can add products to your cart, calculate totals, and view active promotions. You can also run `./mvnw test`.

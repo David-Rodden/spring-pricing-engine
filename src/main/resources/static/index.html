@@ -152,7 +152,8 @@
         </div>
         <div class="section">
             <h2>Calculate</h2>
-            <button onclick="calculateTotal()">Calculate Total</button>
+            <button onclick="calculateTotal()">Question 1: Calculate Total</button>
+            <button onclick="calculateBest()">Question 2: Calculate Best Total</button>
             <div id="result" class="result" style="display:none;"></div>
         </div>
     </div>
@@ -203,17 +204,37 @@
         result.className = isError ? 'result error' : 'result';
         result.style.display = 'block';
     };
+    const post = async (path, cart) => (await fetch(path, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(cart)
+    })).json();
+
     const calculateTotal = async () => {
         const cart = getCart();
         if (cart.length === 0) return show('<p>Add items to cart first.</p>', true);
         try {
-            const res = await fetch('/api/pricing/calculate', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(cart)
-            });
-            const {total} = await res.json();
+            const {total} = await post('/api/pricing/calculate', cart);
             total !== undefined ? show(`<h3>Total: $${total.toFixed(2)}</h3>`) : show('<p>Not implemented yet</p>', true);
+        } catch (e) {
+            show(`<p>Error: ${e.message}</p>`, true);
+        }
+    };
+
+    const calculateBest = async () => {
+        const cart = getCart();
+        if (cart.length === 0) return show('<p>Add items to cart first.</p>', true);
+        try {
+            const data = await post('/api/pricing/calculate-best', cart);
+            // tolerate both shapes: the Map<String, BigDecimal> stub and the PricingResult
+            const total = data.bestTotal ?? data.total;
+            if (total === undefined) return show('<p>Not implemented yet</p>', true);
+            const applied = data.appliedPromotions ?? data.promotions ?? [];
+            show([
+                `<h3>Best Total: $${total.toFixed(2)}</h3>`,
+                data.savings ? `<p>You saved: $${data.savings.toFixed(2)}</p>` : '',
+                applied.length ? `<p>Applied: ${applied.map(p => p.description ?? p.id ?? p).join(', ')}</p>` : ''
+            ].join(''));
         } catch (e) {
             show(`<p>Error: ${e.message}</p>`, true);
         }

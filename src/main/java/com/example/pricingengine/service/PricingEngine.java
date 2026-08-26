@@ -28,4 +28,21 @@ public class PricingEngine {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented");
     }
+
+    /**
+     * Question 2: Find the combination of promotions that minimizes the cart total.
+     * <p>
+     * One rule changes from Question 1: minimumOrderValue is now checked against the
+     * running total rather than the subtotal. Applying one discount can therefore drop
+     * the cart below another promotion's threshold and cost you a bigger saving, so
+     * applying every stackable promotion is no longer guaranteed to be cheapest.
+     * <p>
+     * Return a PricingResult (you'll need to create it) containing the final total, the
+     * promotions that were applied, and the savings versus the subtotal. This lets the
+     * caller show the customer what they saved and why.
+     */
+    public BigDecimal calculateBestTotal(final Collection<CartItem> cart) {
+        // TODO: implement
+        throw new UnsupportedOperationException("Not implemented");
+    }
 }

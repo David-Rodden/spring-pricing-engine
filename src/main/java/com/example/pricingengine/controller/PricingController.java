@@ -24,4 +24,9 @@ public class PricingController {
     public Map<String, BigDecimal> calculate(@RequestBody final Collection<CartItem> cart) {
         return Map.of("total", pricingEngine.calculateTotal(cart));
     }
+
+    @PostMapping("/calculate-best")
+    public Map<String, BigDecimal> calculateBest(@RequestBody final Collection<CartItem> cart) {
+        return Map.of("bestTotal", pricingEngine.calculateBestTotal(cart));
+    }
 }
