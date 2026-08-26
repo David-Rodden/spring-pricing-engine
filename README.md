@@ -14,21 +14,19 @@ Then check `GET http://localhost:8080/api/promotions` to see active promotions. 
 
 ## Your Task
 
-Implement the two methods in `PricingEngine.java`. See `Promotion.java` and `PromotionType.java` for how promotions work.
+Implement `calculateTotal` in `PricingEngine.java`: given a cart, return the final total after applying promotions.
 
-### Question 1: `calculateTotal`
+### Details
 
-Given a cart of items, calculate the final total after applying all applicable promotions. You need to handle:
+Start with `Promotion.java` and `PromotionType.java` for how promotions work, and `GET /api/promotions` for the live data. A promotion only counts if it's active today. You need to handle:
 
-- The `stackable` flag (non-stackable promotions cannot combine with others)
-    - If no stackable promotions exist, find the minimum cost based on non-stackable promotions
-    - Otherwise, only apply stackable promotions that meet conditions for applicability
-- The `minimumOrderValue` threshold (promotion only applies if cart subtotal meets it)
-- The `appliesTo` field (targets a specific SKU, category, or null for cart-wide)
 - All four promotion types: PERCENT_OFF, FLAT_DISCOUNT, BUY_ONE_GET_ONE, CATEGORY_DISCOUNT
+- The `appliesTo` field (a specific SKU, a category, or null for cart-wide) only applies if the cart contains a match
+- The `minimumOrderValue` threshold - only applies if the subtotal meets it, where subtotal is the sum of `price * quantity` before any discount
+- The `stackable` flag (non-stackable promotions can't combine with anything) - the total is the lower of: all applicable stackable promotions together, or each non-stackable promotion on its own
+
+Every discount is computed off the subtotal and the original line totals, so application order doesn't matter. The total never goes below $0.
 
 Use whatever design patterns feel natural here to keep the logic clean and extensible.
 
-Once you implement the methods, go to http://localhost:8080 to test with the UI. You can add products to your cart, calculate totals, and view active promotions.
-
-You can also run `./mvnw test` to run the test suite.
+Once you implement the method, go to http://localhost:8080 to test with the UI. You can add products to your cart, calculate totals, and view active promotions. You can also run `mvn test`.
