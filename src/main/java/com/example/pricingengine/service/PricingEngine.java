@@ -1,16 +1,18 @@
 package com.example.pricingengine.service;
 
 import com.example.pricingengine.model.CartItem;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Collection;
 
 @Service
-@RequiredArgsConstructor
 public class PricingEngine {
     private final PromotionService promotionService;
+
+    public PricingEngine(final PromotionService promotionService) {
+        this.promotionService = promotionService;
+    }
 
     /**
      * Question 1: Given an API that returns active promotions (see GET /api/promotions),

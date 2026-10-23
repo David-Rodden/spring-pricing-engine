@@ -4,7 +4,6 @@ import com.example.pricingengine.model.Promotion;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +13,13 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class PromotionService {
     private final ObjectMapper objectMapper;
     private Collection<Promotion> allPromotions = List.of();
+
+    public PromotionService(final ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @PostConstruct
     void loadPromotions() throws IOException {
