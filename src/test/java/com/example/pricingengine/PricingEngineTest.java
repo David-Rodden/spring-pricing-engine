@@ -15,9 +15,9 @@ class PricingEngineTest {
 
     @BeforeEach
     void setUp() {
-        final var objectMapper = new ObjectMapper();
+        final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        final var promotionService = new PromotionService(objectMapper);
+        final PromotionService promotionService = new PromotionService(objectMapper);
         ReflectionTestUtils.invokeMethod(promotionService, "loadPromotions");
         pricingEngine = new PricingEngine(promotionService);
     }
